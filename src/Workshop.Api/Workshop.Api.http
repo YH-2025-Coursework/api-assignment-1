@@ -1,10 +1,16 @@
 // @ here is syntax from the .http file (REST Client format).
 // @ defines a variable
-// Later you reference it without @, using {{ }}
+// Later it is referenced without @, using {{ }}
 
 @WorkshopAPI_HostAddress = http://localhost:5230
 
+// Define an HTTP request that will be sent to my running API.
 GET {{WorkshopAPI_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+// The controller (or minimal API endpoint) is on the server side and receives it.
+
+// ### is a separator used in .http files (REST Client syntax).
+// It marks the end of one request and allows to define multiple requests in the same file.
