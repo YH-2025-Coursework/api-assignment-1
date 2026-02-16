@@ -1,0 +1,10 @@
+// @ here is syntax from the .http file (REST Client format).
+// @ defines a variable
+// Later you reference it without @, using {{ }}
+
+@WorkshopAPI_HostAddress = http://localhost:5230
+
+GET {{WorkshopAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
