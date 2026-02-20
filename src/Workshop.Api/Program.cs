@@ -1,31 +1,23 @@
-/*
-Kestrel is the built-in web server used by ASP.NET Core.
-
-- It listens on a network port
-- Receives HTTP requests
-- Sends HTTP responses
-
-Kestrel is wired in automatically by ASP.NET Core.
-It “lives” inside the hosting setup created by the next line:
-*/
+using Microsoft.EntityFrameworkCore;
+using Workshop.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*
-Under the hood, that:
-- Creates a generic host
-- Configures Kestrel as the web server
-- Applies launchSettings.json / environment settings
-- Builds the request pipeline
-*/
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    // Pull the Default connection string from config/user secrets.
+    var connectionString = builder.Configuration.GetConnectionString("Default")
+        ?? throw new InvalidOperationException("Connection string 'Default' not found. Ensure appsettings or user secrets contain it.");
 
-// Add services to the container.
+    // Use SQL Server.
+    options.UseSqlServer(connectionString);
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -52,7 +44,6 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast");
 
-// app.Run() starts Kestrel and makes it begin listening on the configured ports.
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
