@@ -36,3 +36,35 @@ Content-Type: application/json
 DELETE {{WorkshopAPI_HostAddress}}/api/workshops/{{workshopId}}
 Accept: application/json
 
+### GET sessions for a workshop
+GET {{WorkshopAPI_HostAddress}}/api/workshops/{{workshopId}}/sessions
+Accept: application/json
+
+### GET session by id
+@sessionId = 00000000-0000-0000-0000-000000000000
+GET {{WorkshopAPI_HostAddress}}/api/workshops/{{workshopId}}/sessions/{{sessionId}}
+Accept: application/json
+
+### POST create session
+POST {{WorkshopAPI_HostAddress}}/api/workshops/{{workshopId}}/sessions
+Content-Type: application/json
+
+{
+  "title": "Check-in",
+  "startTime": "{{date}}",
+  "endTime": "2030-01-01T11:00:00Z"
+}
+
+### PUT update session
+PUT {{WorkshopAPI_HostAddress}}/api/workshops/{{workshopId}}/sessions/{{sessionId}}
+Content-Type: application/json
+
+{
+  "title": "Updated check-in",
+  "startTime": "{{date}}",
+  "endTime": "2030-01-01T12:00:00Z"
+}
+
+### DELETE session
+DELETE {{WorkshopAPI_HostAddress}}/api/workshops/{{workshopId}}/sessions/{{sessionId}}
+Accept: application/json
