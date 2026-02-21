@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+
 // Alias entity types so I can reference them unambiguously inside DbContext
 // despite the root namespace also being named Workshop.
 using SessionEntity = Workshop.Api.Entities.Session;
@@ -19,5 +20,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     - EF Core discovers these properties to build the model.
     - Anywhere I receive AppDbContext, I can query/update those tables via LINQ.
+
+    `=>` means “the getter returns the result of this expression”.
+    So `=> Set<WorkshopEntity>()` just delegates to DbContext.Set<T>() to fetch the DbSet instance.
     */
 }

@@ -3,6 +3,7 @@ using Workshop.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Registers AppDbContext with the DI container so it can be injected wherever it’s requested (e.g., into WorkshopService).
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     // Pull the Default connection string from config/user secrets.
