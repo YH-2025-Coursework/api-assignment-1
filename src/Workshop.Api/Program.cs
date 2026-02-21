@@ -15,8 +15,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString);
 });
 
-// Register workshop domain service so each request gets a scoped instance via DI.
+// Register workshop and session domain services so each request gets a scoped instance via DI.
 builder.Services.AddScoped<IWorkshopService, WorkshopService>();
+builder.Services.AddScoped<ISessionService, SessionService>();
 
 // Register MVC controllers so API endpoints can be mapped via attributes.
 
