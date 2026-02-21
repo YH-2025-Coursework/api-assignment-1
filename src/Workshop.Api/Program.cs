@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Workshop.Api.Data;
+using Workshop.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     // Use SQL Server.
     options.UseSqlServer(connectionString);
 });
+
+// Register workshop domain service so each request gets a scoped instance via DI.
+builder.Services.AddScoped<IWorkshopService, WorkshopService>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
