@@ -13,8 +13,8 @@ public class WorkshopUpdateDto
     // Description remains required even on update payloads.
 
     /*
-      “Payload” refers to the data a client sends in an HTTP request body. In this context,
-      the PUT endpoint expects a JSON body matching WorkshopUpdateDto, so that JSON is the update payload.
+    “Payload” refers to the data a client sends in an HTTP request body. In this context,
+    the PUT endpoint expects a JSON body matching WorkshopUpdateDto, so that JSON is the update payload.
     */
 
     [Required]
