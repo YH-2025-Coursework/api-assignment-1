@@ -18,6 +18,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Register workshop domain service so each request gets a scoped instance via DI.
 builder.Services.AddScoped<IWorkshopService, WorkshopService>();
 
+// Register MVC controllers so API endpoints can be mapped via attributes.
+
+/*
+MVC stands for Model–View–Controller, the architectural pattern ASP.NET Core uses for its controller-based web stack.
+Even when we’re building APIs (no views), the framework still calls the controller package “MVC”, so AddControllers()
+wires up that MVC infrastructure - model binding, validation, filters, and attribute routing - without the Razor view pieces.
+*/
+
+builder.Services.AddControllers();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -29,6 +39,17 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Route attribute-routed controllers (e.g., WorkshopsController).
+
+/*
+app.MapControllers() tells ASP.NET Core to scan the app for controller classes and hook up their attribute routes
+(like [Route("api/workshops")] and [HttpGet]). Once that’s called, any HTTP request matching those attributes gets
+dispatched to the corresponding controller action; without it, the routing table wouldn’t include our controllers, so
+their endpoints wouldn’t respond.
+*/
+
+app.MapControllers();
 
 var summaries = new[]
 {
