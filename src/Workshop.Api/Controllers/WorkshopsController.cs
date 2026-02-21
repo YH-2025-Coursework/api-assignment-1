@@ -4,6 +4,7 @@ using Workshop.Api.Services;
 
 namespace Workshop.Api.Controllers;
 
+// [ApiController] enables automatic model validation, so if a DTO fails data annotations the framework returns a 400 before the action runs.
 [ApiController]
 
 /*
