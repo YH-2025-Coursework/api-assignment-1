@@ -37,6 +37,10 @@ Point `appsettings.Development.json` (or user secrets) at the container:
 
 Replace the password with the value set in `.env`. With that in place, `dotnet ef database update` will target the Docker-hosted SQL Server instance.
 
+## JWT Demo Settings
+
+`appsettings.Development.json` ships with a `Jwt` section containing `Issuer`, `Audience`, `Key`, and `DemoPassword`. The `/api/auth/token` endpoint expects the configured `DemoPassword` and issues a short-lived JWT signed with the configured key. Update those values before deploying anywhere beyond local development.
+
 ## Apply EF Core Migrations
 
 1. Ensure Docker SQL Server is running (see above).
@@ -65,10 +69,11 @@ The default profile hosts the API at `https://localhost:7230` and `http://localh
 
 `src/Workshop.Api/Workshop.Api.http` contains ready-to-run examples for all endpoints:
 
+- `POST /api/auth/token` — exchange the `Jwt:DemoPassword` for a JWT (copy the returned token into the `@jwtToken` variable).
 - `GET /api/workshops?search=` — list or search workshops.
 - `GET /api/workshops/{workshopId}` — fetch a single workshop.
 - `POST /api/workshops` — create a workshop (body includes `title`, `description`, `date`, `maxParticipants`).
-- `PUT /api/workshops/{workshopId}` / `DELETE /api/workshops/{workshopId}` — update or remove workshops.
-- Nested session endpoints under `/api/workshops/{workshopId}/sessions` cover GET/POST/PUT/DELETE.
+- `PUT /api/workshops/{workshopId}` / `DELETE /api/workshops/{workshopId}` — update or remove workshops (DELETE requires `Authorization: Bearer <token>`).
+- Nested session endpoints under `/api/workshops/{workshopId}/sessions` cover GET/POST/PUT/DELETE (DELETE also requires the bearer token).
 
-Use the `.http` file via VS Code’s REST Client extension or import the requests into Postman. Update the `@workshopId`, `@sessionId`, and `@date` variables with real values returned from previous calls.
+Use the `.http` file via VS Code’s REST Client extension or import the requests into Postman. Update the `@workshopId`, `@sessionId`, `@date`, and `@jwtToken` variables with real values returned from previous calls.
