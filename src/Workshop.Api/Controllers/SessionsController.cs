@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Workshop.Api.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Workshop.Api.Services;
 
 namespace Workshop.Api.Controllers;
@@ -61,6 +62,7 @@ public class SessionsController(ISessionService sessionService) : ControllerBase
         return Ok(updated);
     }
 
+    [Authorize]
     [HttpDelete("{sessionId:guid}")]
     // DELETE /api/workshops/{workshopId}/sessions/{sessionId}
     public async Task<IActionResult> Delete(Guid workshopId, Guid sessionId, CancellationToken cancellationToken)

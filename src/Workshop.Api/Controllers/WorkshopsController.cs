@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Workshop.Api.Dtos;
 using Workshop.Api.Services;
@@ -80,6 +81,7 @@ public class WorkshopsController(IWorkshopService workshopService) : ControllerB
     sufficient (it’s the non-generic version when there’s no typed payload to describe).
     */
 
+    [Authorize]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
