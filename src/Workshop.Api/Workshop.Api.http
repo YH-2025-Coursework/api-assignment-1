@@ -36,6 +36,8 @@ Content-Type: application/json
 DELETE {{WorkshopAPI_HostAddress}}/api/workshops/{{workshopId}}
 Accept: application/json
 
+// SESSIONS
+
 ### GET sessions for a workshop
 GET {{WorkshopAPI_HostAddress}}/api/workshops/{{workshopId}}/sessions
 Accept: application/json
