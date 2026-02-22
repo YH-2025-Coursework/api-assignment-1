@@ -1,10 +1,44 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using Workshop.Api.Data;
+using Workshop.Api.Options;
 using Workshop.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Registers AppDbContext with the DI container so it can be injected wherever it’s requested (e.g., into WorkshopService).
+// Bind JWT configuration so authentication middleware and the token endpoint share the same settings.
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
+var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>()
+    ?? throw new InvalidOperationException("Jwt configuration section 'Jwt' is missing.");
+
+if (string.IsNullOrWhiteSpace(jwtSettings.Key))
+{
+    throw new InvalidOperationException("Jwt:Key must be configured.");
+}
+
+var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings.Issuer,
+            ValidAudience = jwtSettings.Audience,
+            IssuerSigningKey = signingKey
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+// Registers AppDbContext with the DI container so it can be injected wherever it's requested (e.g., into WorkshopService).
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     // Pull the Default connection string from config/user secrets.
@@ -29,7 +63,6 @@ wires up that MVC infrastructure - model binding, validation, filters, and attri
 
 builder.Services.AddControllers();
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
@@ -59,7 +92,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
