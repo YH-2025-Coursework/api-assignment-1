@@ -36,3 +36,39 @@ Point `appsettings.Development.json` (or user secrets) at the container:
 ```
 
 Replace the password with the value set in `.env`. With that in place, `dotnet ef database update` will target the Docker-hosted SQL Server instance.
+
+## Apply EF Core Migrations
+
+1. Ensure Docker SQL Server is running (see above).
+2. Restore dependencies and build:
+   ```bash
+   dotnet restore
+   dotnet build
+   ```
+3. Apply the initial migration from the API project directory:
+   ```bash
+   dotnet ef database update --project src/Workshop.Api/Workshop.Api.csproj
+   ```
+   The command creates the `Workshops` and `Sessions` tables in the Docker database.
+
+## Run the API
+
+From `src/Workshop.Api` start the application:
+
+```bash
+dotnet run
+```
+
+The default profile hosts the API at `https://localhost:7230` and `http://localhost:5230` (check `Properties/launchSettings.json`).
+
+## Sample Requests
+
+`src/Workshop.Api/Workshop.Api.http` contains ready-to-run examples for all endpoints:
+
+- `GET /api/workshops?search=` — list or search workshops.
+- `GET /api/workshops/{workshopId}` — fetch a single workshop.
+- `POST /api/workshops` — create a workshop (body includes `title`, `description`, `date`, `maxParticipants`).
+- `PUT /api/workshops/{workshopId}` / `DELETE /api/workshops/{workshopId}` — update or remove workshops.
+- Nested session endpoints under `/api/workshops/{workshopId}/sessions` cover GET/POST/PUT/DELETE.
+
+Use the `.http` file via VS Code’s REST Client extension or import the requests into Postman. Update the `@workshopId`, `@sessionId`, and `@date` variables with real values returned from previous calls.
