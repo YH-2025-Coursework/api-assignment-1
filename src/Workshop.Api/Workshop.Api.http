@@ -1,5 +1,15 @@
 @WorkshopAPI_HostAddress = http://localhost:5230
 @date = 2030-01-01T09:00:00Z
+@jwtToken = <paste token here>
+@jwtPassword = DevPassword!
+
+### POST acquire JWT (copy the token value into @jwtToken above)
+POST {{WorkshopAPI_HostAddress}}/api/auth/token
+Content-Type: application/json
+
+{
+  "password": "{{jwtPassword}}"
+}
 
 ### GET all workshops (supports ?search=)
 GET {{WorkshopAPI_HostAddress}}/api/workshops?search=
@@ -35,6 +45,7 @@ Content-Type: application/json
 ### DELETE workshop
 DELETE {{WorkshopAPI_HostAddress}}/api/workshops/{{workshopId}}
 Accept: application/json
+Authorization: Bearer {{jwtToken}}
 
 // SESSIONS
 
@@ -70,3 +81,4 @@ Content-Type: application/json
 ### DELETE session
 DELETE {{WorkshopAPI_HostAddress}}/api/workshops/{{workshopId}}/sessions/{{sessionId}}
 Accept: application/json
+Authorization: Bearer {{jwtToken}}
