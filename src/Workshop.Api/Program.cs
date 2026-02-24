@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+Ôªøusing Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -56,12 +56,14 @@ builder.Services.AddScoped<ISessionService, SessionService>();
 // Register MVC controllers so API endpoints can be mapped via attributes.
 
 /*
-MVC stands for ModelñViewñController, the architectural pattern ASP.NET Core uses for its controller-based web stack.
-Even when weíre building APIs (no views), the framework still calls the controller package ìMVCî, so AddControllers()
+MVC stands for Model‚ÄìView‚ÄìController, the architectural pattern ASP.NET Core uses for its controller-based web stack.
+Even when we‚Äôre building APIs (no views), the framework still calls the controller package ‚ÄúMVC‚Äù, so AddControllers()
 wires up that MVC infrastructure - model binding, validation, filters, and attribute routing - without the Razor view pieces.
 */
 
 builder.Services.AddControllers();
+
+builder.Services.AddProblemDetails();
 
 builder.Services.AddOpenApi();
 
@@ -72,15 +74,17 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseExceptionHandler();
+
 app.UseHttpsRedirection();
 
 // Route attribute-routed controllers (e.g., WorkshopsController).
 
 /*
 app.MapControllers() tells ASP.NET Core to scan the app for controller classes and hook up their attribute routes
-(like [Route("api/workshops")] and [HttpGet]). Once thatís called, any HTTP request matching those attributes gets
-dispatched to the corresponding controller action; without it, the routing table wouldnít include our controllers, so
-their endpoints wouldnít respond.
+(like [Route("api/workshops")] and [HttpGet]). Once that‚Äôs called, any HTTP request matching those attributes gets
+dispatched to the corresponding controller action; without it, the routing table wouldn‚Äôt include our controllers, so
+their endpoints wouldn‚Äôt respond.
 */
 
 app.MapControllers();
