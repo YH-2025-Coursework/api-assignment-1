@@ -27,7 +27,7 @@ The compose file creates a named volume (`workshop-sql-data`) so data persists a
 
 ## Connection String
 
-Point `appsettings.Development.json` (or user secrets) at the container:
+Copy `appsettings.Development.example.json` to `appsettings.Development.json` (or use user secrets) and point the connection string at the container:
 
 ```json
 "ConnectionStrings": {
@@ -39,7 +39,7 @@ Replace the password with the value set in `.env`. With that in place, `dotnet e
 
 ## JWT Demo Settings
 
-`appsettings.Development.json` ships with a `Jwt` section containing `Issuer`, `Audience`, `Key`, and `DemoPassword`. The `/api/auth/token` endpoint expects the configured `DemoPassword` and issues a short-lived JWT signed with the configured key. Update those values before deploying anywhere beyond local development.
+`appsettings.Development.example.json` ships with a `Jwt` section containing `Issuer`, `Audience`, `Key`, and `DemoPassword`. The `/api/auth/token` endpoint expects the configured `DemoPassword` and issues a short-lived JWT signed with the configured key. Update those values before deploying anywhere beyond local development.
 
 ## Apply EF Core Migrations
 
